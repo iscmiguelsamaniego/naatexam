@@ -1,0 +1,43 @@
+<resources>
+    <dimen name="gen_dimen_2">2sp</dimen>
+    <dimen name="gen_dimen_4">4sp</dimen>
+    <dimen name="gen_dimen_6">6sp</dimen>
+    <dimen name="gen_dimen_8">8sp</dimen>
+    <dimen name="gen_dimen_10">10sp</dimen>
+    <dimen name="gen_dimen_12">12sp</dimen>
+    <dimen name="gen_dimen_14">14sp</dimen>
+    <dimen name="gen_dimen_16">16sp</dimen>
+    <dimen name="gen_dimen_18">18sp</dimen>
+    <dimen name="gen_dimen_20">20sp</dimen>
+    <dimen name="gen_dimen_22">22sp</dimen>
+    <dimen name="gen_dimen_24">24sp</dimen>
+    <dimen name="gen_dimen_26">26sp</dimen>
+    <dimen name="gen_dimen_28">28sp</dimen>
+    <dimen name="gen_dimen_30">30sp</dimen>
+    <dimen name="gen_dimen_32">32sp</dimen>
+    <dimen name="gen_dimen_34">34sp</dimen>
+    <dimen name="gen_dimen_36">36sp</dimen>
+    <dimen name="gen_dimen_38">38sp</dimen>
+    <dimen name="gen_dimen_40">40sp</dimen>
+    <dimen name="gen_dimen_42">42sp</dimen>
+    <dimen name="gen_dimen_44">44sp</dimen>
+    <dimen name="gen_dimen_46">46sp</dimen>
+    <dimen name="gen_dimen_48">48sp</dimen>
+    <dimen name="gen_dimen_50">50sp</dimen>
+    <dimen name="gen_dimen_52">52sp</dimen>
+    <dimen name="gen_dimen_54">54sp</dimen>
+    <dimen name="gen_dimen_56">56sp</dimen>
+    <dimen name="gen_dimen_58">58sp</dimen>
+    <dimen name="gen_dimen_60">60sp</dimen>
+    <dimen name="gen_dimen_62">62sp</dimen>
+    <dimen name="gen_dimen_64">64sp</dimen>
+    <dimen name="gen_dimen_66">66sp</dimen>
+    <dimen name="gen_dimen_68">68sp</dimen>
+    <dimen name="gen_dimen_70">70sp</dimen>
+    <dimen name="gen_dimen_72">72sp</dimen>
+    <dimen name="gen_dimen_74">74sp</dimen>
+    <dimen name="gen_dimen_76">76sp</dimen>
+    <dimen name="gen_dimen_78">78sp</dimen>
+    <dimen name="gen_dimen_80">80sp</dimen>
+
+</resources>
