@@ -16,56 +16,111 @@ import org.samtech.naatexamen.model.database.Sales;
 import org.samtech.naatexamen.utils.AlertUtils;
 import org.samtech.naatexamen.utils.ImageUtils;
 import org.samtech.naatexamen.utils.MessagesUtils;
+import org.samtech.naatexamen.utils.RegexUtils;
+import org.samtech.naatexamen.utils.StringUtils;
 
+import java.util.Objects;
+
+import static org.samtech.naatexamen.utils.Keys.POSITIVE;
 import static org.samtech.naatexamen.utils.Keys.SALESID;
 
 public class BuyAirTimeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView imageView;
-    private EditText username, password;
-    private Button continueBtn;
+    private EditText phonenumberEditText, amountEditText;
     private int drawableSrc;
     DatabaseManager dbManager;
+    int idsales;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_buy_airtime);
 
-        imageView = findViewById(R.id.act_buy_airtime_image_header);
-        username = findViewById(R.id.act_buy_airtime_username);
-        password = findViewById(R.id.act_buy_airtime_password);
-        continueBtn = findViewById(R.id.act_buy_airtime_continue_btn);
+        ImageView imageView = findViewById(R.id.act_buy_airtime_image_header);
+        phonenumberEditText = findViewById(R.id.act_buy_airtime_phonenumber);
+        amountEditText = findViewById(R.id.act_buy_airtime_amount);
+        Button continueBtn = findViewById(R.id.act_buy_airtime_continue_btn);
 
         continueBtn.setOnClickListener(this);
         dbManager = new DatabaseManager(this);
         Intent intent = getIntent();
-        int idsales = intent.getIntExtra(SALESID, 0);
-        getAndSetValuesFromDB(idsales);
+        idsales = intent.getIntExtra(SALESID, 0);
 
-    }
-
-    private void getAndSetValuesFromDB(int paramId) {
-        Sales sales = dbManager.getSale(paramId);
-
-        if (sales != null) {
-            drawableSrc = ImageUtils.getDrawable(sales.getBcname());
+        if (queryValues(idsales) != null) {
+            drawableSrc = ImageUtils.getDrawable(Objects.requireNonNull
+                    (queryValues(idsales)).getBcname());
             ImageUtils.setImage(this, imageView, drawableSrc);
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.act_buy_airtime_continue_btn:
-                showAlert();
-                break;
+    private Sales queryValues(int paramId) {
+        Sales sales = dbManager.getSale(paramId);
+        if (sales != null) {
+            return sales;
         }
+        return null;
     }
 
-    private void showAlert() {
+    private Sales updateSales() {
+        String phoneAux = StringUtils.getEText(phonenumberEditText);
+        String amountAux = StringUtils.getEText(amountEditText);
+
+        if (queryValues(idsales) != null) {
+            Sales saleValues = queryValues(idsales);
+            assert saleValues != null;
+            Sales sale = new Sales(saleValues.getId(), saleValues.getBcname(), phoneAux, amountAux,
+                    saleValues.getConcept());
+            dbManager.updateSale(sale);
+
+            if (queryValues(saleValues.getId()) != null) {
+                return queryValues(saleValues.getId());
+            }
+        }
+        return null;
+    }
+
+    private boolean isValidForm() {
+        String phoneAux = StringUtils.getEText(phonenumberEditText);
+        String amountAux = StringUtils.getEText(amountEditText);
+        int amountAuxMin = Integer.parseInt(!amountAux.isEmpty() ? amountAux : "0");
+
+        if (RegexUtils.isNotemptyValidate(phoneAux)) {
+            if (RegexUtils.isNotemptyValidate(amountAux)) {
+                if(phoneAux.length() >= 10) {
+                    if (RegexUtils.isNotemptyValidate(amountAux)) {
+                        if(amountAuxMin >= 20) {
+                            return true;
+                        }else{
+                            MessagesUtils.showToast(this,
+                                    "El monto minimo es de 20");
+                        }
+                    } else {
+                        MessagesUtils.showToast(this,
+                                "Por favor registra una cantidad");
+                    }
+                }else{
+                    MessagesUtils.showToast(this,
+                            "Longitud del número telefónico invalida");
+                }
+            } else {
+                MessagesUtils.showToast(this,
+                        "Ingrese una cantidad");
+            }
+        } else {
+            MessagesUtils.showToast(this,
+                    "Por favor registra un némero telefónico");
+        }
+        return false;
+    }
+
+    private void showConfirmAlert() {
+
+        String details = "Con el número: \n" + StringUtils.getEText(phonenumberEditText)
+                + " \n y el monto: \n $" + StringUtils.getEText(amountEditText);
+
         AlertUtils.showConfirmAlert(this,
                 R.string.do_reload,
+                details,
                 R.string.accept,
                 R.string.cancel,
                 drawableSrc,
@@ -73,8 +128,44 @@ public class BuyAirTimeActivity extends AppCompatActivity implements View.OnClic
                 new CallbackUtilAlert() {
                     @Override
                     public void onClickAlert(boolean isClicked, int actionType) {
-                        MessagesUtils.showToast(BuyAirTimeActivity.this, "listo");
+                        if (updateSales() != null) {
+                            if(actionType == POSITIVE) {
+                                updateSales();
+                                showReadyAlert();
+                            }
+                        }
                     }
                 });
     }
+
+    private void showReadyAlert() {
+        AlertUtils.showReadyAlert(this,
+                R.string.ready_reload,
+                R.string.accept,
+                R.drawable.ic_done,
+                false,
+                new CallbackUtilAlert() {
+                    @Override
+                    public void onClickAlert(boolean isClicked, int actionType) {
+                        clearForm();
+                        finish();
+                    }
+                });
+    }
+    private void clearForm(){
+        phonenumberEditText.setText("");
+        amountEditText.setText("");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.act_buy_airtime_continue_btn:
+                if (isValidForm()) {
+                    showConfirmAlert();
+                }
+                break;
+        }
+    }
+
 }

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/item_sales_bc_image"
-        android:layout_width="90sp"
-        android:layout_height="90sp"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
         android:layout_gravity="center"
         android:layout_margin="@dimen/gen_dimen_16"
         android:background="@drawable/ic_claro"
@@ -20,6 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textSize="@dimen/gen_dimen_28"
+        android:layout_margin="@dimen/gen_dimen_26"
         android:gravity="center"
         android:textColor="@color/colorWhite" />
 </LinearLayout>

@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,6 +28,7 @@ import org.samtech.naatexamen.retrofit.ApiDefinition;
 import org.samtech.naatexamen.utils.KeyboardUtils;
 import org.samtech.naatexamen.utils.Keys;
 import org.samtech.naatexamen.utils.MessagesUtils;
+import org.samtech.naatexamen.utils.NetworkUtils;
 import org.samtech.naatexamen.utils.PreferencesUtils;
 import org.samtech.naatexamen.utils.ProgressUtils;
 import org.samtech.naatexamen.utils.RegexUtils;
@@ -35,7 +41,8 @@ import retrofit2.Response;
 import static org.samtech.naatexamen.utils.Keys.JSON_FACTORY;
 import static org.samtech.naatexamen.utils.Keys.LOGIN_RESPONSE;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
+        TextView.OnEditorActionListener, CompoundButton.OnCheckedChangeListener {
 
     private ProgressBar progressBar;
     private TextView progressTextView, versionApp;
@@ -53,8 +60,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         formLoginContainer = findViewById(R.id.act_login_form_container);
         usernameEditText = findViewById(R.id.act_login_username);
         passwordEditText = findViewById(R.id.act_login_password);
+        AppCompatCheckBox showPasswordCheck = findViewById(R.id.act_login_show_pass_check);
         Button enterBtn = findViewById(R.id.act_login_enter_btn);
 
+        showPasswordCheck.setOnCheckedChangeListener(this);
         passwordEditText.setOnEditorActionListener(this);
         enterBtn.setOnClickListener(this);
 
@@ -62,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setVersionApp() {
-        PackageInfo pInfo = null;
+        PackageInfo pInfo;
         try {
 
             pInfo = LoginActivity.this.getPackageManager().
@@ -85,7 +94,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+    public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+
+        switch (textView.getId()) {
+            case R.id.act_login_password:
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    doLoginAccess();
+                    return true;
+                }
+                break;
+        }
         return false;
     }
 
@@ -112,8 +130,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void doLoginAccess() {
-        if (isValidFormLogin()) {
-            requestAccessToServer(StringUtils.getEText(usernameEditText), StringUtils.getEText(passwordEditText));
+        if (NetworkUtils.isConnected(this)) {
+            if (isValidFormLogin()) {
+                requestAccessToServer(StringUtils.getEText(usernameEditText),
+                        StringUtils.getEText(passwordEditText));
+            }
+        } else {
+            MessagesUtils.showToast(this, "No se detecta una conexión a internet");
         }
     }
 
@@ -163,5 +186,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
 
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        if (!isChecked) {
+            passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        } else {
+            passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        }
     }
 }

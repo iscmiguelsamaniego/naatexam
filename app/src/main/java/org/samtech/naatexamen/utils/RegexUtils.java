@@ -10,4 +10,8 @@ public class RegexUtils {
         Matcher matcher = pattern.matcher(paramValue);
         return matcher.find();
     }
+
+    public static boolean isValidPhone(String phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
 }

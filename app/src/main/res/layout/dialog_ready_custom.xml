@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    card_view:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlueDark">
+
+        <TextView
+            android:id="@+id/dialog_alert_ready_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/gen_dimen_12"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/gen_dimen_20"
+            tools:text="Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..." />
+
+        <ImageView
+            android:id="@+id/dialog_alert_ready_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_alert_ready_body"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/gen_description"
+            android:padding="@dimen/gen_dimen_12"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/dialog_alert_ready_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_alert_ready_image"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/gen_dimen_16"
+            android:background="@drawable/roundedbutton"
+            android:padding="@dimen/gen_dimen_12"
+            android:paddingEnd="@dimen/gen_dimen_40"
+            android:paddingStart="@dimen/gen_dimen_40"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/gen_dimen_16"
+            tools:text="Aceptar" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

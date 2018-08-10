@@ -4,4 +4,15 @@
     <string name="do_reload">Se realizará una recarga :</string>
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
+    <string name="ready_reload">La recarga se ha realizado con éxito</string>
+    <string name="action_search">Buscar</string>
+    <string name="search_hint">Buscar ...</string>
+    <string name="gen_description">Generic description</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="enter">Entrar</string>
+    <string name="phone_number">Número telefónico</string>
+    <string name="amount">Monto de la recarga</string>
+    <string name="continuar">Continuar</string>
 </resources>

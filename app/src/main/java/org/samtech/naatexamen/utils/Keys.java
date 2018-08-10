@@ -9,5 +9,6 @@ public class Keys {
     public static final int SPANCOUNT = 3;
     final public static int POSITIVE = 246;
     final public static int NEGATIVE = 481;
+    final public static int SPLASH_DURATION = 5000;
 
 }

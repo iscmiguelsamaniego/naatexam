@@ -43,7 +43,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return id;
     }
 
-    public void deletaSale(long sale_id) {
+    public void deleteSale(long sale_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Sales.TABLE_NAME, Sales.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(sale_id)});
@@ -52,6 +52,19 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + Sales.TABLE_NAME);
+    }
+
+    public int updateSale(Sales sale){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Sales.COLUMN_BC_NAME, sale.getBcname());
+        values.put(Sales.COLUMN_CELL_NUMBER, sale.getCellnumber());
+        values.put(Sales.COLUMN_AMOUNT, sale.getAmount());
+        values.put(Sales.COLUMN_CONCEPT, sale.getConcept());
+
+        return db.update(Sales.TABLE_NAME, values, Sales.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(sale.getId())});
     }
 
     public Sales getSale(int id) {
